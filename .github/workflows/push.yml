@@ -1,0 +1,97 @@
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+env:
+  GOLANG_CI_LINT_VERSION: v1.50.0
+  GOPRIVATE: "github.com/cloudy-sky-software/*"
+  PROVIDER: "render"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Unshallow clone for tags
+        run: git fetch --prune --unshallow --tags
+
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19.x
+
+      - run: |
+          git config --global url."https://praneetloke:${GH_REPO_PAT}@github.com/".insteadOf "https://github.com/"
+        env:
+          GH_REPO_PAT: ${{ secrets.GH_REPO_PAT }}
+
+      - name: Lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANG_CI_LINT_VERSION
+          make lint
+
+      - name: Test
+        run: make test
+
+  assert-clean-tree:
+    name: Check if working tree is clean
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - run: |
+          git config --global url."https://praneetloke:${GH_REPO_PAT}@github.com/".insteadOf "https://github.com/"
+        env:
+          GH_REPO_PAT: ${{ secrets.GH_REPO_PAT }}
+
+      - name: Unshallow clone for tags
+        run: git fetch --prune --unshallow --tags
+
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19.x
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: Setup DotNet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 3.1.301
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install pulumictl
+        uses: jaxxstorm/action-install-gh-release@v1.7.1
+        with:
+          repo: pulumi/pulumictl
+          tag: "latest"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate schema and build SDKs
+        run: make gen generate_schema build
+
+      - name: Check worktree clean
+        run: |
+          git update-index -q --refresh
+          if ! git diff-files --quiet; then
+              >&2 echo "error: working tree is not clean, aborting!"
+              git status
+              git diff
+              exit 1
+          fi

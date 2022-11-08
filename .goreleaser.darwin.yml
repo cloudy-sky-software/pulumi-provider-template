@@ -1,0 +1,32 @@
+archives:
+  - id: archive
+    name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
+before:
+  hooks:
+    - make gen generate_schema
+    - make build
+builds:
+  - binary: pulumi-resource-xyz
+    main: ./cmd/pulumi-resource-xyz/
+    dir: provider
+    env:
+      - GO111MODULE=on
+    goarch:
+      - amd64
+      - arm64
+    goos:
+      - darwin
+    ldflags:
+      # The line below MUST align with the module in current provider/go.mod
+      - -X github.com/cloudy-sky-software/pulumi-xyz/provider/pkg/version.Version={{.Tag }}
+checksum:
+  name_template: "{{ .ProjectName }}_darwin_checksums.txt"
+changelog:
+  skip: true
+release:
+  disable: false
+  prerelease: auto
+  header: |
+    See [CHANGELOG.md](https://github.com/cloudy-sky-software/pulumi-xyz/blob/main/CHANGELOG.md)
+snapshot:
+  name_template: "{{ .Tag }}-SNAPSHOT"

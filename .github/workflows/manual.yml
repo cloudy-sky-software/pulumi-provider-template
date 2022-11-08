@@ -1,0 +1,54 @@
+on:
+  workflow_dispatch:
+
+env:
+  GOPRIVATE: "github.com/cloudy-sky-software/*"
+  PROVIDER: "render"
+
+jobs:
+  publish-binary:
+    name: Publish binary
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - run: |
+          git config --local url."https://praneetloke:${GH_REPO_PAT}@github.com/".insteadOf "https://github.com/"
+        env:
+          GH_REPO_PAT: ${{ secrets.GH_REPO_PAT }}
+
+      - name: Unshallow clone for tags
+        run: git fetch --prune --unshallow --tags
+
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{matrix.goversion}}
+
+      - name: Install pulumictl
+        uses: jaxxstorm/action-install-gh-release@v1.7.1
+        with:
+          repo: pulumi/pulumictl
+          tag: "latest"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          args: -p 1 release --rm-dist --timeout 90m0s
+          version: latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist/**/*
+    strategy:
+      fail-fast: true
+      matrix:
+        goversion:
+          - 1.19.x
