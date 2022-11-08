@@ -1,16 +1,18 @@
-on:
-  push:
-    branches:
-      - main
+# Enable the CI triggers when you are ready.
+#
+# on:
+#   push:
+#     branches:
+#       - main
 
-  pull_request:
-    branches:
-      - main
+#   pull_request:
+#     branches:
+#       - main
 
 env:
   GOLANG_CI_LINT_VERSION: v1.50.0
   GOPRIVATE: "github.com/cloudy-sky-software/*"
-  PROVIDER: "render"
+  PROVIDER: "xyz"
 
 jobs:
   lint:

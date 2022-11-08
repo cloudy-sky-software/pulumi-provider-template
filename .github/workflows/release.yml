@@ -7,7 +7,7 @@ on:
 env:
   GOLANG_CI_LINT_VERSION: v1.50.0
   GOPRIVATE: "github.com/cloudy-sky-software/*"
-  PROVIDER: "render"
+  PROVIDER: "xyz"
   NPM_TOKEN: ${{ secrets.NPM_AUTOMATION_TOKEN }}
   PUBLISH_NPM: true
   NPM_REGISTRY_URL: https://registry.npmjs.org
