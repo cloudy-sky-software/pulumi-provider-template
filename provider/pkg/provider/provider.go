@@ -57,7 +57,7 @@ func (p *xyzProvider) OnInvoke(ctx context.Context, req *pulumirpc.InvokeRequest
 // OnConfigure is called by the provider framework when Pulumi calls Configure on
 // the resource provider server.
 func (p *xyzProvider) OnConfigure(_ context.Context, req *pulumirpc.ConfigureRequest) (*pulumirpc.ConfigureResponse, error) {
-	apiKey, ok := req.GetVariables()["render:config:apiKey"]
+	apiKey, ok := req.GetVariables()["xyz:config:apiKey"]
 	if !ok {
 		// Check if it's set as an env var.
 		envVarNames := handler.GetSchemaSpec().Provider.InputProperties["apiKey"].DefaultInfo.Environment

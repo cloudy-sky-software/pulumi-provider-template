@@ -1,6 +1,8 @@
 # Enable the CI triggers when you are ready.
 #
-# on:
+on:
+  workflow_dispatch:
+
 #   push:
 #     branches:
 #       - main
