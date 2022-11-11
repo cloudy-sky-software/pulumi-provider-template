@@ -9,7 +9,7 @@ import (
 	"github.com/cloudy-sky-software/pulumi-provider-template/provider/pkg/version"
 )
 
-var providerName = "render"
+var providerName = "xyz"
 
 //go:embed schema.json
 var pulumiSchema []byte
