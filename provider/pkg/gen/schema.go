@@ -89,13 +89,13 @@ func PulumiSchema(openapiDoc openapi3.T) (pschema.PackageSpec, openapigen.Provid
 	}
 
 	openAPICtx := &openapigen.OpenAPIContext{
-		Doc:             openapiDoc,
-		Pkg:             &pkg,
-		ResourceCRUDMap: make(map[string]*openapigen.CRUDOperationsMap),
-		ExcludedPaths:   []string{},
+		Doc:           openapiDoc,
+		Pkg:           &pkg,
+		ExcludedPaths: []string{},
 	}
 
-	if err := openAPICtx.GatherResourcesFromAPI(csharpNamespaces); err != nil {
+	providerMetadata, err := openAPICtx.GatherResourcesFromAPI(csharpNamespaces)
+	if err != nil {
 		contract.Failf("generating resources from OpenAPI spec: %v", err)
 	}
 
@@ -146,7 +146,8 @@ func PulumiSchema(openapiDoc openapi3.T) (pschema.PackageSpec, openapigen.Provid
 	})
 
 	metadata := openapigen.ProviderMetadata{
-		ResourceCRUDMap: openAPICtx.ResourceCRUDMap,
+		ResourceCRUDMap: providerMetadata.ResourceCRUDMap,
+		AutoNameMap:     providerMetadata.AutoNameMap,
 	}
 	return pkg, metadata
 }
