@@ -50,8 +50,12 @@ func (p *xyzProvider) GetAuthorizationHeader() string {
 	return fmt.Sprintf("%s %s", authSchemePrefix, p.apiKey)
 }
 
-func (p *xyzProvider) OnInvoke(ctx context.Context, req *pulumirpc.InvokeRequest) (*pulumirpc.InvokeResponse, error) {
-	return nil, nil
+func (p *xyzProvider) OnPreInvoke(ctx context.Context, req *pulumirpc.InvokeRequest, httpReq *http.Request) error {
+	return nil
+}
+
+func (p *xyzProvider) OnPostInvoke(ctx context.Context, req *pulumirpc.InvokeRequest, outputs interface{}) (map[string]interface{}, error) {
+	return outputs.(map[string]interface{}), nil
 }
 
 // OnConfigure is called by the provider framework when Pulumi calls Configure on
