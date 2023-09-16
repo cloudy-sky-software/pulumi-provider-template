@@ -1,6 +1,6 @@
 module github.com/cloudy-sky-software/pulumi-xyz/provider
 
-go 1.18
+go 1.21
 
 require (
 	github.com/cloudy-sky-software/pulschema v0.0.0-20221107123555-df1075036703
