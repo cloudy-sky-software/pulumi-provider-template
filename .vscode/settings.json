@@ -1,7 +1,8 @@
 {
   "gopls": {
     "build.env": {
-      "GOPRIVATE": "github.com/cloudy-sky-software/*"
+      "GOPRIVATE": "github.com/cloudy-sky-software/*",
+      "GO111MODULE": "on"
     }
   }
 }
