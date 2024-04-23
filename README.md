@@ -6,7 +6,17 @@ This repository is a boilerplate showing how to create a native Pulumi provider 
 2. [`pulumi-provider-framework`](https://github.com/cloudy-sky-software/pulumi-provider-framework) (closed-source) to make HTTP requests against the cloud provider API. It uses the metadata returned by `pulschema` as one of the outputs from
    converting an OpenAPI spec.
 
-### Background
+## `cloudy-sky-software/pulumi-provider-template` vs. `cloudy-sky-software/pulumi-provider-boilerplate`
+
+This template serves as a base for providers that are built using `pulschema` _and_ `pulumi-provider-framework`.
+[`cloudy-sky-software/pulumi-provider-boilerplate`](https://github.com/cloudy-sky-software/pulumi-provider-boilerplate) still serves as a base for a provider that uses `pulschema`
+to derive a Pulumi schema from an OpenAPI spec, but does not have any dependency on `pulumi-provider-framework`.
+Without `pulumi-provider-framework` it is up to as to how you want to make the HTTP requests to the respective
+cloud provider API you are working with. You have to implement Pulumi's `ResourceProviderServer` interface
+yourself and handle all the concerns of communicating with the cloud provider API, including performing
+diffs, checks etc.
+
+## Background
 
 Follow this link to see what a [Pulumi native provider is comprised of](https://github.com/cloudy-sky-software/cloud-provider-api-conformance/blob/main/pulumi.md).
 
