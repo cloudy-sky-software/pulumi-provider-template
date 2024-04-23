@@ -86,8 +86,9 @@ func main() {
 	case Go:
 		writeGoClient(schemaPkg, outdir)
 	case Schema:
-		openapiDoc := openapi.GetOpenAPISpec(openapiDocBytes)
-		schemaSpec, metadata := providerSchemaGen.PulumiSchema(*openapiDoc)
+		openAPIDoc := openapi.GetOpenAPISpec(openapiDocBytes)
+		providerSchemaGen.FixOpenAPIDoc(openAPIDoc)
+		schemaSpec, metadata, updatedOpenAPIDoc := providerSchemaGen.PulumiSchema(openAPIDoc)
 		providerDir := filepath.Join(".", "provider", "cmd", "pulumi-resource-xyz")
 		mustWritePulumiSchema(schemaSpec, providerDir)
 
@@ -95,8 +96,9 @@ func main() {
 		metadataBytes, _ := json.Marshal(metadata)
 		mustWriteFile(providerDir, "metadata.json", metadataBytes)
 
+		updatedOpenAPIDocBytes, _ := yaml.Marshal(updatedOpenAPIDoc)
 		// Also copy the raw OpenAPI spec file to the provider dir.
-		mustWriteFile(providerDir, "openapi_generated.yml", openapiDocBytes)
+		mustWriteFile(providerDir, "openapi_generated.yml", updatedOpenAPIDocBytes)
 	default:
 		panic(fmt.Sprintf("Unrecognized language '%s'", language))
 	}
@@ -138,7 +140,7 @@ func writeNodeJSClient(pkg *schema.Package, outdir string) {
 	}
 
 	overlays := map[string][]byte{}
-	files, err := nodejsgen.GeneratePackage("pulumigen", pkg, overlays)
+	files, err := nodejsgen.GeneratePackage("pulumigen", pkg, overlays, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -170,7 +172,7 @@ func writeDotnetClient(pkg *schema.Package, outdir string) {
 
 	overlays := map[string][]byte{}
 
-	files, err := dotnetgen.GeneratePackage("pulumigen", pkg, overlays)
+	files, err := dotnetgen.GeneratePackage("pulumigen", pkg, overlays, nil)
 	if err != nil {
 		panic(err)
 	}
