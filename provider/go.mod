@@ -6,7 +6,7 @@ require (
 	github.com/cloudy-sky-software/pulschema 10c1fe440329
 	github.com/cloudy-sky-software/pulumi-provider-framework e0ed0163f465
 	github.com/getkin/kin-openapi v0.124.0
-	github.com/pulumi/pulumi/pkg/v3 v3.114.0
+	github.com/pulumi/pulumi/pkg/v3 v3.115.0
 	github.com/pulumi/pulumi/sdk/v3 v3.113.3
 )
 
