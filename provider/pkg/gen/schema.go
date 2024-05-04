@@ -118,7 +118,7 @@ func PulumiSchema(openapiDoc openapi3.T) (pschema.PackageSpec, openapigen.Provid
 	})
 
 	pkg.Language["go"] = rawMessage(map[string]interface{}{
-		"importBasePath": "github.com/cloudy-sky-software/pulumi-xyz/sdk/go/render",
+		"importBasePath": "github.com/cloudy-sky-software/pulumi-xyz/sdk/go/xyz",
 	})
 	pkg.Language["nodejs"] = rawMessage(map[string]interface{}{
 		"packageName": "@cloudyskysoftware/pulumi-xyz",
