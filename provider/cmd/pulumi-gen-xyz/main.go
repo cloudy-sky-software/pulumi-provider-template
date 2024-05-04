@@ -89,6 +89,12 @@ func main() {
 		writeGoClient(schemaPkg, outdir)
 	case Schema:
 		openAPIDoc := openapi.GetOpenAPISpec(openapiDocBytes)
+
+		err := providerSchemaGen.FixOpenAPIDoc(openAPIDoc)
+		if err != nil {
+			panic(err)
+		}
+
 		schemaSpec, metadata, updatedOpenAPIDoc := providerSchemaGen.PulumiSchema(*openAPIDoc)
 		providerDir := filepath.Join(".", "provider", "cmd", "pulumi-resource-xyz")
 		mustWritePulumiSchema(schemaSpec, providerDir)
