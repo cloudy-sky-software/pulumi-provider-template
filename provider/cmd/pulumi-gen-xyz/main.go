@@ -11,6 +11,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"gopkg.in/yaml.v3"
+
 	providerSchemaGen "github.com/cloudy-sky-software/pulumi-xyz/provider/pkg/gen"
 	providerVersion "github.com/cloudy-sky-software/pulumi-xyz/provider/pkg/version"
 
