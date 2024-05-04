@@ -78,7 +78,7 @@ func (p *xyzProvider) OnConfigure(_ context.Context, req *pulumirpc.ConfigureReq
 		}
 	}
 
-	logging.V(3).Info("Configuring XYZ API key")
+	logging.V(3).Info("Configuring Xyz API key")
 	p.apiKey = apiKey
 
 	return &pulumirpc.ConfigureResponse{
