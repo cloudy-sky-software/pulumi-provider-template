@@ -52,15 +52,23 @@ Pulumi offers this repository as a [GitHub template repository](https://docs.git
 
 1. Click "Use this template".
 1. Set the following options:
-   - Owner: pulumi
-   - Repository name: pulumi-xyz-native (replace "xyz" with the name of your provider)
+   - Owner: `<your GH organization>`
+   - Repository name: pulumi-xyz (replace "xyz" with the name of your provider)
+     - Providers built from Cloudy Sky Software's templates are _always_ native providers, by default. 
+     - However, if there is already a TF-bridged provider with that name, you should add the suffix `-native` so that the package name in some package registries do not conflict with the other providers.
    - Description: Pulumi provider for xyz
    - Repository type: Public
 1. Clone the generated repository.
 
 From the templated repository:
 
-1. Search-replace `xyz` with the name of your desired provider.
+Search-replace the following occurrences with the corresponding names.
+
+|Search|Replace With|
+|------|------------|
+|xyz|Lower-cased name of the provider|
+|Xyz|Pascal-case name of the provider|
+|XYZ|Upper-cased name of the provider|
 
 #### Build the provider and install the plugin
 
