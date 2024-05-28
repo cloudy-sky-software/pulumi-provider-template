@@ -124,9 +124,12 @@ func PulumiSchema(openapiDoc openapi3.T) (pschema.PackageSpec, openapigen.Provid
 		"packageName": "@cloudyskysoftware/pulumi-xyz",
 	})
 	pkg.Language["python"] = rawMessage(map[string]interface{}{
-		"packageName": "pulumi_xyz",
+		"packageName": "pulumi_x_y_z",
 		"requires": map[string]string{
 			"pulumi": ">=3.0.0,<4.0.0",
+		},
+		"pyproject": map[string]bool{
+			"enabled": true,
 		},
 	})
 
