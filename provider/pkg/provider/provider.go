@@ -104,8 +104,8 @@ func (p *xyzProvider) OnPreRead(ctx context.Context, req *pulumirpc.ReadRequest,
 	return nil
 }
 
-func (p *xyzProvider) OnPostRead(ctx context.Context, req *pulumirpc.ReadRequest, outputs map[string]interface{}) (map[string]interface{}, error) {
-	return outputs, nil
+func (p *xyzProvider) OnPostRead(ctx context.Context, req *pulumirpc.ReadRequest, outputs interface{}) (map[string]interface{}, error) {
+	return outputs.(map[string]interface{}), nil
 }
 
 func (p *xyzProvider) OnPreUpdate(ctx context.Context, req *pulumirpc.UpdateRequest, httpReq *http.Request) error {
