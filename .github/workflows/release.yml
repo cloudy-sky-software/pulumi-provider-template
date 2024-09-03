@@ -173,7 +173,7 @@ jobs:
         dotnetversion:
           - 6.x
         goversion:
-          - 1.19.x
+          - 1.21.x
         language:
           - nodejs
           - python
