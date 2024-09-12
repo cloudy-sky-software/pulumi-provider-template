@@ -1,4 +1,4 @@
-# Pulumi Native Provider Template
+# Pulumi Provider Template For OpenAPI-based Providers
 
 This repository is a boilerplate showing how to create a native Pulumi provider using:
 
