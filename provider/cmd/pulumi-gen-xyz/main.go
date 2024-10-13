@@ -147,7 +147,7 @@ func writeNodeJSClient(pkg *schema.Package, outdir string) {
 	}
 
 	overlays := map[string][]byte{}
-	files, err := nodejsgen.GeneratePackage("pulumigen", pkg, overlays, nil)
+	files, err := nodejsgen.GeneratePackage("pulumigen", pkg, overlays, nil, false)
 	if err != nil {
 		panic(err)
 	}
@@ -199,7 +199,7 @@ func writeDotnetClient(pkg *schema.Package, outdir string) {
 }
 
 func writeGoClient(pkg *schema.Package, outdir string) {
-	files, err := gogen.GeneratePackage("pulumigen", pkg)
+	files, err := gogen.GeneratePackage("pulumigen", pkg, nil)
 	if err != nil {
 		panic(err)
 	}
