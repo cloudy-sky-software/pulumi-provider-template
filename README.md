@@ -97,7 +97,6 @@ You now have:
    2. `pkg`
       1. `provider` - holds the gRPC methods (and for now, the sample implementation logic) required by the Pulumi engine
       2. `version` - semver package to be consumed by build processes
-2. `deployment-templates` - a set of files to help you around deployment and publication
 3. `sdk` - holds the generated code libraries created by `pulumi-gen-xyz/main.go`
 4. `examples` a folder of Pulumi programs to try locally and/or use in CI.
 5. A `Makefile` and this `README`.
@@ -121,6 +120,42 @@ You can now repeat the steps for [build, install, and test](#test-against-the-ex
 ## Documentation
 
 Please [follow this guide to add documentation to your provider](https://www.pulumi.com/docs/guides/pulumi-packages/how-to-author/#write-documentation).
+
+### Importing Existing Resources
+
+Import IDs should satisfy all ID segments in the `GET` endpoint for the resource
+you are importing. The IDs required in the path should be separated by `/`.
+First, start by identifying the `GET` endpoint in the OpenAPI spec
+for the provider.
+
+For example, let's assume such a GET endpoint path for some resource is: `/services/{serviceId}/someResource/{someResourceId}`.
+
+Thus, the `pulumi import` command to run is:
+
+```bash
+# The resource type token can be easily found by using your IDEs
+# Go To Definition functionality for the resource and looking at the type
+# property defined in the custom resource's class definition.
+pulumi import {resourceTypeToken} {resourceName} /{serviceId}/{someResourceId}
+```
+
+Alternatively, you can also import using the `import` Pulumi resource option.
+Run `pulumi up` to import the resource into your stack's state. Once imported,
+you should remove the `import` resource option.
+
+```typescript
+const someResource = new SomeResource(
+  "myResourceName",
+  { //inputs for the reosurce },
+  {
+    protect: true,
+    import: `/{serviceId}/{someResourceId}`,
+  }
+);
+```
+
+Refer to the Pulumi [docs](https://www.pulumi.com/docs/iac/adopting-pulumi/import/) for importing a
+resource.
 
 ## Configuring CI and releases
 
