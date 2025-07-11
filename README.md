@@ -81,7 +81,7 @@ SDKs.
 
 The larger the spec the more likely there are errors in the spec itself. In most cases, it has nothing to do with `pulschema`.
 If it's a genuine bug in `pulschema`, please open an [issue](https://github.com/cloudy-sky-software/pulschema/issues).
-You'll likely need to patch the OpenAPI spec. You can do that using Go instead of manually editing the spec file
+But it's more than likely you'll need to patch the OpenAPI spec itself. You can do that using Go instead of manually editing the spec file
 which can be quite cumbersome, especially if you are dealing with a very large spec.
 Anyway, here's where you can write Go code to modify the spec: https://github.com/cloudy-sky-software/pulumi-provider-template/blob/main/provider/pkg/gen/openapi_fixes.go.
 Here's an example of an OpenAPI spec that needed to be modified: https://github.com/cloudy-sky-software/pulumi-digitalocean-native/blob/main/provider/pkg/gen/openapi_fixes.go
