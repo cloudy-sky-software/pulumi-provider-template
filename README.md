@@ -79,7 +79,8 @@ i.e. replaced `xyz` with the appropriate name (see the section above), you can g
 `make gen generate_schema`. You must have a Pulumi schema generated successfully in order to generate the language
 SDKs.
 
-The larger the spec the more likely there are errors in the spec itself. It has nothing to do with `pulschema`.
+The larger the spec the more likely there are errors in the spec itself. In most cases, it has nothing to do with `pulschema`.
+If it's a genuine bug in `pulschema`, please open an [issue](https://github.com/cloudy-sky-software/pulschema/issues).
 You'll likely need to patch the OpenAPI spec. You can do that using Go instead of manually editing the spec file
 which can be quite cumbersome, especially if you are dealing with a very large spec.
 Anyway, here's where you can write Go code to modify the spec: https://github.com/cloudy-sky-software/pulumi-provider-template/blob/main/provider/pkg/gen/openapi_fixes.go.
