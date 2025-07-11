@@ -61,6 +61,33 @@ Search-replace the following occurrences with the corresponding names.
 | XYZ    | Upper-cased name of the provider                                               |
 | x_y_z  | Lower snake-cased name of the provider if the provider name has multiple words |
 
+#### Embed the OpenAPI spec
+
+The OpenAPI spec file for the provider you are building must be placed in the `provider/cmd/pulumi-gen-*` folder as `openapi.yml`.
+Unlike some of Pulumi's own native providers which download the OpenAPI spec from an upstream repo, this template does not do that
+as it does not know where to download the OpenAPI spec from.
+
+- You can, of course, add a Make target similar to what Pulumi does with some of its native providers and have it download the latest
+OpenAPI spec from an upstream repo.
+- You can also rename the file to something other than `openapi.yml` if you wish. Be sure to change the name of the file that Go
+should embed in `provider/cmd/pulumi-gen-*/main.go`.
+
+#### Generate Pulumi schema
+
+Now that you have an OpenAPI spec downloaded and all the placholders renamed to the appropriate provider/package name,
+i.e. replaced `xyz` with the appropriate name (see the section above), you can generate a Pulumi schema by running
+`make gen generate_schema`. You must have a Pulumi schema generated successfully in order to generate the language
+SDKs.
+
+The larger the spec the more likely there are errors in the spec itself. It has nothing to do with `pulschema`.
+You'll likely need to patch the OpenAPI spec. You can do that using Go instead of manually editing the spec file
+which can be quite cumbersome, especially if you are dealing with a very large spec.
+Anyway, here's where you can write Go code to modify the spec: https://github.com/cloudy-sky-software/pulumi-provider-template/blob/main/provider/pkg/gen/openapi_fixes.go.
+Here's an example of an OpenAPI spec that needed to be modified: https://github.com/cloudy-sky-software/pulumi-digitalocean-native/blob/main/provider/pkg/gen/openapi_fixes.go
+
+If there are endpoints in the spec that you don't care about and want to exclude them from Pulumi,
+you can pass a [list](https://github.com/cloudy-sky-software/pulumi-provider-template/blob/main/provider/pkg/gen/schema.go#L94) of the endpoint paths exactly as they appear in the spec.
+
 #### Build the provider and install the plugin
 
 ```bash
@@ -73,6 +100,10 @@ This will:
 2. Create the provider binary and place it in the `./bin` folder (gitignored)
 3. Generate the dotnet, Go, Node, and Python SDKs and place them in the `./sdk` folder
 4. Install the provider on your machine.
+
+Feel free to modify any of the Make targets (or add news ones) to fit your needs.
+If you feel others might find them useful, please consider contributing it back to
+this template repo. :)
 
 #### Test against the example
 
