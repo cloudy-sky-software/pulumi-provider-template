@@ -54,12 +54,15 @@ From the templated repository:
 
 Search-replace the following occurrences with the corresponding names.
 
-| Search | Replace With                                                                   |
-| ------ | ------------------------------------------------------------------------------ |
-| xyz    | Lower-cased name of the provider                                               |
-| Xyz    | Pascal-case name of the provider                                               |
-| XYZ    | Upper-cased name of the provider                                               |
-| x_y_z  | Lower snake-cased name of the provider if the provider name has multiple words |
+| Search                                    | Replace With                                                                   |
+| ----------------------------------------- | ------------------------------------------------------------------------------ |
+| github.com/cloudy-sky-software/pulumi-xyz | Remote location of your repository                                             |
+| xyz                                       | Lower-cased name of the provider                                               |
+| Xyz                                       | Pascal-case name of the provider                                               |
+| XYZ                                       | Upper-cased name of the provider                                               |
+| x_y_z                                     | Lower snake-cased name of the provider if the provider name has multiple words |
+
+Update the `Homepage` and `Publisher` values in `provider/pkg/gen/schema.go - PulumiSchema` appropriately.
 
 #### Embed the OpenAPI spec
 
