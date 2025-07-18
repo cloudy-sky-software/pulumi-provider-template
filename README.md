@@ -119,8 +119,6 @@ $ pulumi stack init test
 $ pulumi up
 ```
 
-Now that you have completed all of the above steps, you have a working provider that generates a random string for you.
-
 #### A brief repository overview
 
 You now have:
