@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/getkin/kin-openapi v0.133.0
-	github.com/pulumi/pulumi/pkg/v3 v3.211.0
+	github.com/pulumi/pulumi/pkg/v3 v3.212.0
 	github.com/pulumi/pulumi/sdk/v3 v3.212.0
 )
 
