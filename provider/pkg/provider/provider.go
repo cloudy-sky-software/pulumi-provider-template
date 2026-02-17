@@ -21,6 +21,11 @@ import (
 )
 
 type xyzProvider struct {
+	// This embedded struct provides default implementation for callback methods.
+	// You are only required to implement the `GetAuthorizationHeader()` method.
+	// While not strictly required you might also want to implement `OnConfigure()`.
+	fwCallback.UnimplementedProviderCallback
+
 	name    string
 	version string
 
@@ -50,16 +55,7 @@ func (p *xyzProvider) GetAuthorizationHeader() string {
 	return fmt.Sprintf("%s %s", authSchemePrefix, p.apiKey)
 }
 
-func (p *xyzProvider) OnPreInvoke(ctx context.Context, req *pulumirpc.InvokeRequest, httpReq *http.Request) error {
-	return nil
-}
-
-func (p *xyzProvider) OnPostInvoke(ctx context.Context, req *pulumirpc.InvokeRequest, outputs interface{}) (map[string]interface{}, error) {
-	return outputs.(map[string]interface{}), nil
-}
-
-// OnConfigure is called by the provider framework when Pulumi calls Configure on
-// the resource provider server.
+// OnConfigure method allows you to customize the provider configuration.
 func (p *xyzProvider) OnConfigure(_ context.Context, req *pulumirpc.ConfigureRequest) (*pulumirpc.ConfigureResponse, error) {
 	apiKey, ok := req.GetVariables()["xyz:config:apiKey"]
 	if !ok {
@@ -84,42 +80,4 @@ func (p *xyzProvider) OnConfigure(_ context.Context, req *pulumirpc.ConfigureReq
 	return &pulumirpc.ConfigureResponse{
 		AcceptSecrets: true,
 	}, nil
-}
-
-// OnDiff checks what impacts a hypothetical update will have on the resource's properties.
-func (p *xyzProvider) OnDiff(ctx context.Context, req *pulumirpc.DiffRequest, resourceTypeToken string, diff *resource.ObjectDiff, jsonReq *openapi3.MediaType) (*pulumirpc.DiffResponse, error) {
-	return nil, nil
-}
-
-func (p *xyzProvider) OnPreCreate(ctx context.Context, req *pulumirpc.CreateRequest, httpReq *http.Request) error {
-	return nil
-}
-
-// OnPostCreate allocates a new instance of the provided resource and returns its unique ID afterwards.
-func (p *xyzProvider) OnPostCreate(ctx context.Context, req *pulumirpc.CreateRequest, outputs interface{}) (map[string]interface{}, error) {
-	return outputs.(map[string]interface{}), nil
-}
-
-func (p *xyzProvider) OnPreRead(ctx context.Context, req *pulumirpc.ReadRequest, httpReq *http.Request) error {
-	return nil
-}
-
-func (p *xyzProvider) OnPostRead(ctx context.Context, req *pulumirpc.ReadRequest, outputs interface{}) (map[string]interface{}, error) {
-	return outputs.(map[string]interface{}), nil
-}
-
-func (p *xyzProvider) OnPreUpdate(ctx context.Context, req *pulumirpc.UpdateRequest, httpReq *http.Request) error {
-	return nil
-}
-
-func (p *xyzProvider) OnPostUpdate(ctx context.Context, req *pulumirpc.UpdateRequest, httpReq http.Request, outputs interface{}) (map[string]interface{}, error) {
-	return outputs.(map[string]interface{}), nil
-}
-
-func (p *xyzProvider) OnPreDelete(ctx context.Context, req *pulumirpc.DeleteRequest, httpReq *http.Request) error {
-	return nil
-}
-
-func (p *xyzProvider) OnPostDelete(ctx context.Context, req *pulumirpc.DeleteRequest) error {
-	return nil
 }
