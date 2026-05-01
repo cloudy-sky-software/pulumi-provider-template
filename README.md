@@ -75,26 +75,6 @@ OpenAPI spec from an upstream repo.
 - You can also rename the file to something other than `openapi.yml` if you wish. Be sure to change the name of the file that Go
 should embed in `provider/cmd/pulumi-gen-*/main.go`.
 
-<details>
-   <summary>Using an OpenAPI spec that's 3.1+?</summary>
-
-   The OpenAPI spec parsing library `getkin/kin-openapi` does not support 3.1 specs.
-   As such, in addition to normal errors in auto-generated specs that you have to
-   patch yourself, you'd find yourself with more errors than you need to fix.
-
-   So you should switch to using a [fork](https://github.com/oasdiff/kin-openapi) of `kin-openapi` library maintained by @oasdiff.
-   To do that, use a `replace` directive in `provider/go.mod`. The import path of the
-   module does not change. The branch to use is [`feat/openapi-3.1-support`](https://github.com/oasdiff/kin-openapi/tree/feat/openapi-3.1-support).
-
-   At the time of this writing, `da004e9` is the latest commit in the `feat/openapi-3.1-support` branch.
-   If oasdiff has merged this branch into their `main`, you may use a commit from their `main`
-   branch.
-   
-   ```bash
-   go mod edit -replace github.com/getkin/kin-openapi=github.com/oasdiff/kin-openapi@da004e9a862bc3bd5be58b704704a37dd6c2182f
-   ```
-</details>
-
 #### Generate Pulumi schema
 
 Now that you have an OpenAPI spec downloaded and all the placholders renamed to the appropriate provider/package name,
