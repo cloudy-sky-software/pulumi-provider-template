@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/getkin/kin-openapi v0.138.0
 	github.com/pulumi/pulumi/pkg/v3 v3.238.0
-	github.com/pulumi/pulumi/sdk/v3 v3.237.0
+	github.com/pulumi/pulumi/sdk/v3 v3.239.0
 )
 
 require github.com/stretchr/testify v1.11.1
