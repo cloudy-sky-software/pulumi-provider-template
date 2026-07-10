@@ -3,7 +3,7 @@ module github.com/cloudy-sky-software/pulumi-xyz/provider
 go 1.21
 
 require (
-	github.com/getkin/kin-openapi v0.140.0
+	github.com/getkin/kin-openapi v0.141.0
 	github.com/pulumi/pulumi/pkg/v3 v3.251.0
 	github.com/pulumi/pulumi/sdk/v3 v3.251.0
 )
