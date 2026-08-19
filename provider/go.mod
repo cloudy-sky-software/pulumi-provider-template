@@ -8,7 +8,7 @@ require (
 	github.com/pulumi/pulumi/sdk/v3 v3.258.0
 )
 
-require github.com/stretchr/testify v1.12.0
+require github.com/stretchr/testify v1.12.1
 
 require (
 	github.com/cloudy-sky-software/pulschema 23301dde3025
