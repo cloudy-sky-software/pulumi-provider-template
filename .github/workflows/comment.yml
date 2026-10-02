@@ -1,3 +1,11 @@
+# This workflow allows you to add a comment in a PR
+# to trigger regeneration of Pulumi schema and SDKs.
+#
+# For usage along with the secrets you need to create
+# in your repo, see:
+# cloudy-sky-software/pulumi-provider-workflows/.github/workflows/pr_comment.yml
+#
+
 on: issue_comment
 
 jobs:
