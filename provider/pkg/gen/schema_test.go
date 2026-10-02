@@ -9,7 +9,7 @@ import (
 )
 
 func TestPulumiSchema(t *testing.T) {
-	b, err := os.ReadFile(filepath.Join("..", "..", "cmd", "pulumi-gen-render", "openapi.yml"))
+	b, err := os.ReadFile(filepath.Join("..", "..", "cmd", "pulumi-gen-xyz", "openapi.yml"))
 	if err != nil {
 		t.Fatalf("Failed reading openapi.yml: %v", err)
 	}

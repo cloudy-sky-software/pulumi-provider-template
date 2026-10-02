@@ -8,6 +8,10 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 
+	dotnetgen "github.com/pulumi/pulumi-dotnet/pulumi-language-dotnet/v3/codegen"
+	gogen "github.com/pulumi/pulumi/pkg/v3/codegen/go"
+	nodejsgen "github.com/pulumi/pulumi/pkg/v3/codegen/nodejs"
+	pythongen "github.com/pulumi/pulumi/pkg/v3/codegen/python"
 	pschema "github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
@@ -42,8 +46,8 @@ func PulumiSchema(openapiDoc openapi3.T) (pschema.PackageSpec, openapigen.Provid
 					Description: "The API key",
 					TypeSpec:    pschema.TypeSpec{Type: "string"},
 					Language: map[string]pschema.RawMessage{
-						"csharp": rawMessage(map[string]interface{}{
-							"name": "ApiKey",
+						"csharp": rawMessage(dotnetgen.LanguageResource{
+							Name: "ApiKey",
 						}),
 					},
 					Secret: true,
@@ -66,8 +70,8 @@ func PulumiSchema(openapiDoc openapi3.T) (pschema.PackageSpec, openapigen.Provid
 					Description: "The Xyz API key.",
 					TypeSpec:    pschema.TypeSpec{Type: "string"},
 					Language: map[string]pschema.RawMessage{
-						"csharp": rawMessage(map[string]interface{}{
-							"name": "ApiKey",
+						"csharp": rawMessage(dotnetgen.LanguageResource{
+							Name: "ApiKey",
 						}),
 					},
 					Secret: true,
@@ -99,7 +103,7 @@ func PulumiSchema(openapiDoc openapi3.T) (pschema.PackageSpec, openapigen.Provid
 		contract.Failf("generating resources from OpenAPI spec: %v", err)
 	}
 
-	// Add examples to resources
+	// Add examples to resources.
 	for k, v := range examples.ResourceExample {
 		if r, ok := pkg.Resources[k]; ok {
 			r.Description += "\n\n" + v
@@ -107,30 +111,28 @@ func PulumiSchema(openapiDoc openapi3.T) (pschema.PackageSpec, openapigen.Provid
 		}
 	}
 
-	pkg.Language["csharp"] = rawMessage(map[string]interface{}{
-		"rootNamespace": "Pulumi",
-		"packageReferences": map[string]string{
+	pkg.Language["csharp"] = rawMessage(dotnetgen.CSharpPackageInfo{
+		RootNamespace: "Pulumi",
+		PackageReferences: map[string]string{
 			"Pulumi": "3.*",
 		},
-		"namespaces": csharpNamespaces,
-		// TODO: What does this enable?
-		// "dictionaryConstructors": true,
+		Namespaces: csharpNamespaces,
 	})
 
-	pkg.Language["go"] = rawMessage(map[string]interface{}{
-		"importBasePath": "github.com/cloudy-sky-software/pulumi-xyz/sdk/go/xyz",
+	pkg.Language["go"] = rawMessage(gogen.GoPackageInfo{
+		ImportBasePath: "github.com/cloudy-sky-software/pulumi-xyz/sdk/go/xyz",
 	})
-	pkg.Language["nodejs"] = rawMessage(map[string]interface{}{
-		"packageName": "@cloudyskysoftware/pulumi-xyz",
+	pkg.Language["nodejs"] = rawMessage(nodejsgen.NodePackageInfo{
+		PackageName: "@cloudyskysoftware/pulumi-xyz",
 	})
-	pkg.Language["python"] = rawMessage(map[string]interface{}{
-		"packageName": "pulumi_x_y_z",
-		"requires": map[string]string{
+	pkg.Language["python"] = rawMessage(pythongen.PackageInfo{
+		PackageName: "pulumi_x_y_z",
+		Requires: map[string]string{
 			"pulumi": ">=3.0.0,<4.0.0",
 		},
-		"pyproject": map[string]bool{
-			"enabled": true,
-		},
+		PyProject: struct {
+			Enabled bool `json:"enabled,omitempty"`
+		}{Enabled: true},
 	})
 
 	metadata := openapigen.ProviderMetadata{

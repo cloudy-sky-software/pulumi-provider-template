@@ -1,6 +1,6 @@
 module github.com/cloudy-sky-software/pulumi-xyz/provider
 
-go 1.21
+go 1.27
 
 require (
 	github.com/getkin/kin-openapi v0.149.0
