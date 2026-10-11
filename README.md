@@ -42,12 +42,12 @@ Pulumi offers this repository as a [GitHub template repository](https://docs.git
 
 1. Click "Use this template".
 1. Set the following options:
-   - Owner: `<your GH organization>`
-   - Repository name: pulumi-xyz (replace "xyz" with the name of your provider)
-     - Providers built from Cloudy Sky Software's templates are _always_ native providers, by default.
-     - However, if there is already a TF-bridged provider with that name, you should add the suffix `-native` so that the package name in some package registries do not conflict with the other providers.
-   - Description: Pulumi provider for xyz
-   - Repository type: Public
+    - Owner: `<your GH organization>`
+    - Repository name: pulumi-xyz (replace "xyz" with the name of your provider)
+        - Providers built from Cloudy Sky Software's templates are _always_ native providers, by default.
+        - However, if there is already a TF-bridged provider with that name, you should add the suffix `-native` so that the package name in some package registries do not conflict with the other providers.
+    - Description: Pulumi provider for xyz
+    - Repository type: Public
 1. Clone the generated repository.
 
 From the templated repository:
@@ -70,10 +70,8 @@ The OpenAPI spec file for the provider you are building must be placed in the `p
 Unlike some of Pulumi's own native providers which download the OpenAPI spec from an upstream repo, this template does not do that
 as it does not know where to download the OpenAPI spec from.
 
-- You can, of course, add a Make target similar to what Pulumi does with some of its native providers and have it download the latest
-OpenAPI spec from an upstream repo.
-- You can also rename the file to something other than `openapi.yml` if you wish. Be sure to change the name of the file that Go
-should embed in `provider/cmd/pulumi-gen-*/main.go`.
+- You can, of course, add a Make target similar to what Pulumi does with some of its native providers and have it download the latest OpenAPI spec from an upstream repo.
+- You can also rename the file to something other than `openapi.yml` if you wish. Be sure to change the name of the file that Go should embed in `provider/cmd/pulumi-gen-*/main.go`.
 
 #### Generate Pulumi schema
 
@@ -82,11 +80,17 @@ i.e. replaced `xyz` with the appropriate name (see the section above), you can g
 `make gen generate_schema`. You must have a Pulumi schema generated successfully in order to generate the language
 SDKs.
 
-The larger the spec the more likely there are errors in the spec itself. In most cases, it has nothing to do with `pulschema`.
-If it's a genuine bug in `pulschema`, please open an [issue](https://github.com/cloudy-sky-software/pulschema/issues).
-But it's more than likely you'll need to patch the OpenAPI spec itself. You can do that using Go instead of manually editing the spec file
-which can be quite cumbersome, especially if you are dealing with a very large spec.
+**Note**: If you have a JSON OpenAPI spec, you can convert it to YAML format using the
+`Makefile` target `json2yaml`. :warning: Using it requires [`yq`](https://github.com/mikefarah/yq/) and Node.js to be
+installed. You can also convert it using other means yourself, of course.
+
+The larger the spec the more likely there are errors in the spec itself. In most cases, it has nothing to do with `pulschema`. If it's a genuine bug in `pulschema`, please open an [issue](https://github.com/cloudy-sky-software/pulschema/issues).
+
+If you need to patch the OpenAPI spec you can do that using Go instead
+of manually editing the spec file which can be quite cumbersome,
+especially if you are dealing with a very large spec.
 Anyway, here's where you can write Go code to modify the spec: https://github.com/cloudy-sky-software/pulumi-provider-template/blob/main/provider/pkg/gen/openapi_fixes.go.
+
 Here's an example of an OpenAPI spec that needed to be modified: https://github.com/cloudy-sky-software/pulumi-digitalocean-native/blob/main/provider/pkg/gen/openapi_fixes.go
 
 If there are endpoints in the spec that you don't care about and want to exclude them from Pulumi,
@@ -95,7 +99,7 @@ you can pass a [list](https://github.com/cloudy-sky-software/pulumi-provider-tem
 #### Build the provider and install the plugin
 
 ```bash
-$ make build install
+make build provider install
 ```
 
 This will:
@@ -109,14 +113,18 @@ Feel free to modify any of the Make targets (or add news ones) to fit your needs
 If you feel others might find them useful, please consider contributing it back to
 this template repo. :)
 
+**Note**: If you only make changes to the provider and don't need to regenerate
+the SDKs, you can just run `make provider` to rebuild the provider binary and install
+it in `GOBIN`.
+
 #### Test against the example
 
 ```bash
-$ cd examples/simple
-$ yarn link @pulumi/xyz
-$ yarn install
-$ pulumi stack init test
-$ pulumi up
+cd examples/simple
+yarn link @pulumi/xyz
+yarn install
+pulumi stack init test
+pulumi up -s test
 ```
 
 #### A brief repository overview
@@ -124,15 +132,15 @@ $ pulumi up
 You now have:
 
 1. A `provider/` folder containing the building and implementation logic
-   1. `cmd/`
-      1. `pulumi-gen-xyz/` - generates language SDKs from the schema
-      2. `pulumi-resource-xyz/` - holds the package schema, injects the package version, and starts the gRPC server
-   2. `pkg`
-      1. `provider` - holds the gRPC methods (and for now, the sample implementation logic) required by the Pulumi engine
-      2. `version` - semver package to be consumed by build processes
-3. `sdk` - holds the generated code libraries created by `pulumi-gen-xyz/main.go`
-4. `examples` a folder of Pulumi programs to try locally and/or use in CI.
-5. A `Makefile` and this `README`.
+    1. `cmd/`
+        1. `pulumi-gen-xyz/` - generates language SDKs from the schema
+        2. `pulumi-resource-xyz/` - holds the package schema, injects the package version, and starts the gRPC server
+    2. `pkg`
+        1. `provider` - holds the gRPC methods (and for now, the sample implementation logic) required by the Pulumi engine
+        2. `version` - semver package to be consumed by build processes
+2. `sdk` - holds the generated code libraries created by `pulumi-gen-xyz/main.go`
+3. `examples` a folder of Pulumi programs to try locally and/or use in CI.
+4. A `Makefile` and this `README`.
 
 ### Implementing the provider callback methods
 

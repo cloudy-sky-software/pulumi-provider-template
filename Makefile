@@ -32,6 +32,10 @@ generate_schema::
 	$(WORKING_DIR)/bin/$(CODEGEN) -v=3 --logtostderr schema
 	echo "Finished generating schema."
 
+json2yaml::
+	yq -p=json -oy openapi.json > provider/cmd/pulumi-gen-xyz/openapi.yml
+	npx prettier provider/cmd/pulumi-gen-xyz/openapi.yml --write
+
 provider::
 	(cd provider && go build -o $(WORKING_DIR)/bin/${PROVIDER} -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" $(PROJECT)/${PROVIDER_PATH}/cmd/$(PROVIDER))
 
