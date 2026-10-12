@@ -94,6 +94,11 @@ jobs:
     name: Publish SDKs
     runs-on: ubuntu-latest
     needs: publish-binary
+    permissions:
+      contents: read
+      # Needed for OIDC token exchange with language registries
+      # for Trusted Publishing.
+      id-token: write
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v7
