@@ -63,6 +63,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install Pulumi CLI
+        uses: pulumi/actions@598b17045ce608f3af1f68e06c04649a0ab4a829
+        with:
+          pulumi-version: latest
+
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@01cbe076be10ba0af7b0b9319ac490a93d3d2fcd
         with:
