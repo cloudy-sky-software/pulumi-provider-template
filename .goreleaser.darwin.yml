@@ -3,10 +3,6 @@ version: 2
 archives:
   - id: archive
     name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
-before:
-  hooks:
-    - make gen generate_schema
-    - make build
 builds:
   - binary: pulumi-resource-xyz
     main: ./cmd/pulumi-resource-xyz/
