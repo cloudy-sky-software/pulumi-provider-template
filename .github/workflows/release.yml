@@ -196,3 +196,15 @@ jobs:
           - python
           - dotnet
           - go
+
+  publish-release:
+    runs-on: ubuntu-latest
+    needs: publish-binary
+    permissions:
+      # To allow GH CLI to edit the GH release.
+      contents: write
+    steps:
+      - name: Publish GH release
+        run: gh release edit ${{ github.ref_name }} --draft=false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
