@@ -36,6 +36,9 @@ jobs:
     name: Publish binary
     runs-on: ${{ matrix.agent-os }}
     needs: lint
+    permissions:
+      # To allow goreleaser to create a GH release.
+      contents: write
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v7
