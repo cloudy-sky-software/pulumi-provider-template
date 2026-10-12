@@ -139,6 +139,11 @@ jobs:
 
       - name: Generate SDK
         run: make gen ${{ matrix.language }}_sdk
+        env:
+          # The setup-node action creates an .npmrc file
+          # referencing `NODE_AUTH_TOKEN`.
+          # https://docs.github.com/en/actions/tutorials/publish-packages/publish-nodejs-packages
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTOMATION_TOKEN }}
 
       - name: Check worktree clean
         run: |
